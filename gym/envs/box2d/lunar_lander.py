@@ -298,6 +298,8 @@ class LunarLander(gym.Env, EzPickle):
                 * self.wind_power
             )
             self.wind_idx += 1
+            print('calculated wind power:')
+            print(wind_mag)
             self.lander.ApplyForceToCenter(
                 (wind_mag, 0.0),
                 True,
