@@ -104,6 +104,7 @@ class LunarLander(gym.Env, EzPickle):
         self.moon = None
         self.lander = None
         self.enable_wind = enable_wind
+        self.wind_power = wind_power
 
         self.wind_idx = np.random.randint(-9999, 9999)
         self.particles = []
