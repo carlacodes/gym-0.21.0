@@ -181,7 +181,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
             shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
                                     self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
-                               vertices=vertices_poly/SCALE),
+                               vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
             categoryBits=0x1000,
         )
 
