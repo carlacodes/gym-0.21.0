@@ -177,6 +177,18 @@ class LunarLander(gym.Env, EzPickle):
         self.moon = self.world.CreateStaticBody(
             shapes=edgeShape(vertices=[(0, 0), (W, 0)])
         )
+        vertices_poly = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
+        self.obstacle = self.world.CreateStaticBody(
+
+            shapes=polygonShape(centroid=(self.obstacle_params[0] + VIEWPORT_W / 2 / SCALE,
+                                    self.obstacle_params[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+                               vertices=vertices_poly/SCALE),
+            categoryBits=0x1000,
+        )
+
+        self.obstacle.color1 = (1.0, 0.0, 0.0)
+        self.obstacle.color2 = (1.0, 0.0, 0.0)
+        self.obstacle.alpha = 0.5
         self.sky_polys = []
         for i in range(CHUNKS - 1):
             p1 = (chunk_x[i], smooth_y[i])
@@ -391,7 +403,10 @@ class LunarLander(gym.Env, EzPickle):
             1.0 if self.legs[1].ground_contact else 0.0,
         ]
         assert len(state) == 8
-
+        distance_to_obstacle = np.sqrt((pos.x - (self.obstacle_params[0] +
+                                                 VIEWPORT_W / SCALE / 2)) ** 2 +
+                                       (pos.y - (self.obstacle_params[1] +
+                                                 (self.helipad_y + LEG_DOWN / SCALE))) ** 2)
         reward = 0
         shaping = (
             -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
@@ -399,6 +414,7 @@ class LunarLander(gym.Env, EzPickle):
             - 100 * abs(state[4])
             + 10 * state[6]
             + 10 * state[7]
+            - 50 * (distance_to_obstacle <= (self.obstacle_params[2]))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
