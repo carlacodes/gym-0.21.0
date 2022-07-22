@@ -463,6 +463,8 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         for obj in self.particles + self.drawlist:
             for f in obj.fixtures:
+                print('shape in object fixtures')
+                print(f)
                 trans = f.body.transform
                 if type(f.shape) is circleShape:
                     t = rendering.Transform(translation=trans * f.shape.pos)
