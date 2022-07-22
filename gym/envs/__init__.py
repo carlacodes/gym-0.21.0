@@ -71,6 +71,21 @@ register(
     reward_threshold=200,
 )
 
+##v4 = obstacle enviornment
+register(
+    id="LunarLander-v4",
+    entry_point="gym.envs.box2d:LunarLanderObs",
+    max_episode_steps=1000,
+    reward_threshold=200,
+)
+
+register(
+    id="LunarLanderContinuous-v4",
+    entry_point="gym.envs.box2d:LunarLanderContinuousObs",
+    max_episode_steps=1000,
+    reward_threshold=200,
+)
+
 register(
     id="BipedalWalker-v3",
     entry_point="gym.envs.box2d:BipedalWalker",
