@@ -176,6 +176,7 @@ class LunarLanderObs(gym.Env, EzPickle):
         self.moon = self.world.CreateStaticBody(
             shapes=edgeShape(vertices=[(0, 0), (W, 0)])
         )
+        #defining the polygon obstacle here:
         vertices_poly = [(-1, -1), (-1, 1), (1, 1), (1, -1)] #may need to change later
         self.obstacle = self.world.CreateStaticBody(
 
