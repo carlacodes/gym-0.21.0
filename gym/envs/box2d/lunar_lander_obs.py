@@ -108,7 +108,6 @@ class LunarLanderObs(gym.Env, EzPickle):
         self.enable_wind = enable_wind
 
         self.obs_coords = obs_coords
-        #assert len(self.obstacle_params) == 3  # get normalized (x,y) pair for obstacle
         self.enable_obstacle = enable_obstacle
         self.wind_power = wind_power
 
@@ -180,8 +179,8 @@ class LunarLanderObs(gym.Env, EzPickle):
         vertices_poly = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
         self.obstacle = self.world.CreateStaticBody(
 
-            shapes=polygonShape(centroid=(self.obstacle_params[0] + VIEWPORT_W / 2 / SCALE,
-                                    self.obstacle_params[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+            shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+                                    self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
                                vertices=vertices_poly/SCALE),
             categoryBits=0x1000,
         )
@@ -403,9 +402,9 @@ class LunarLanderObs(gym.Env, EzPickle):
             1.0 if self.legs[1].ground_contact else 0.0,
         ]
         assert len(state) == 8
-        distance_to_obstacle = np.sqrt((pos.x - (self.obstacle_params[0] +
+        distance_to_obstacle = np.sqrt((pos.x - (self.obs_coords[0] +
                                                  VIEWPORT_W / SCALE / 2)) ** 2 +
-                                       (pos.y - (self.obstacle_params[1] +
+                                       (pos.y - (self.obs_coords[1] +
                                                  (self.helipad_y + LEG_DOWN / SCALE))) ** 2)
         reward = 0
         shaping = (
