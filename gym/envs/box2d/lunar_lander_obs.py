@@ -498,7 +498,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             self.viewer = None
 
 
-class LunarLanderContinuousObs(LunarLander):
+class LunarLanderContinuousObs(LunarLanderObs):
     continuous = True
 
 
