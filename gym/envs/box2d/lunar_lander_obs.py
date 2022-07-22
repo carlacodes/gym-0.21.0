@@ -176,7 +176,7 @@ class LunarLanderObs(gym.Env, EzPickle):
         self.moon = self.world.CreateStaticBody(
             shapes=edgeShape(vertices=[(0, 0), (W, 0)])
         )
-        vertices_poly = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
+        vertices_poly = [(-1, -1), (-1, 1), (1, 1), (1, -1)] #may need to change later
         self.obstacle = self.world.CreateStaticBody(
 
             shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
@@ -186,7 +186,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         self.obstacle.color1 = (1.0, 0.0, 0.0)
         self.obstacle.color2 = (1.0, 0.0, 0.0)
-        self.obstacle.alpha = 0.5
+        self.obstacle.alpha = 0.8
         self.sky_polys = []
         for i in range(CHUNKS - 1):
             p1 = (chunk_x[i], smooth_y[i])
