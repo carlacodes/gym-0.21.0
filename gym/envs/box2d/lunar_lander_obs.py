@@ -86,7 +86,7 @@ class ContactDetector(contactListener):
                 self.env.legs[i].ground_contact = False
 
 
-class LunarLander(gym.Env, EzPickle):
+class LunarLanderObs(gym.Env, EzPickle):
     metadata = {"render.modes": ["human", "rgb_array"], "video.frames_per_second": FPS}
 
     continuous = False
@@ -95,7 +95,7 @@ class LunarLander(gym.Env, EzPickle):
 
         enable_wind: bool = False,
         wind_power: float = 15.0,
-        obs_coords: float = [0, 0.5, 0],
+        obs_coords: float = [0, 0.5],
         enable_obstacle: bool = False
         ):
         EzPickle.__init__(self)
@@ -414,7 +414,7 @@ class LunarLander(gym.Env, EzPickle):
             - 100 * abs(state[4])
             + 10 * state[6]
             + 10 * state[7]
-            - 50 * (distance_to_obstacle <= (self.obstacle_params[2]))
+            - 50 * (distance_to_obstacle <= (1/SCALE))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
@@ -498,7 +498,7 @@ class LunarLander(gym.Env, EzPickle):
             self.viewer = None
 
 
-class LunarLanderContinuous(LunarLander):
+class LunarLanderContinuousObs(LunarLander):
     continuous = True
 
 
