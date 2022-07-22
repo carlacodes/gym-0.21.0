@@ -95,7 +95,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         enable_wind: bool = False,
         wind_power: float = 15.0,
-        obs_coords = [0, 0.5],
+        obs_coords = [1, 0],
         enable_obstacle: bool = False
         ):
         EzPickle.__init__(self)
@@ -185,8 +185,8 @@ class LunarLanderObs(gym.Env, EzPickle):
                                vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
         )
 
-        self.obstacle.color1 = (1.0, 0.0, 0.0)
-        self.obstacle.color2 = (1.0, 0.0, 0.0)
+        self.obstacle.color1 = (128, 0.0, 0.0)
+        self.obstacle.color2 = (128, 0.0, 0.0)
         self.obstacle.alpha = 0.8
         self.sky_polys = []
         for i in range(CHUNKS - 1):
