@@ -278,7 +278,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             leg.joint = self.world.CreateJoint(rjd)
             self.legs.append(leg)
 
-        self.drawlist = [self.lander] + self.legs + self.obstacle
+        self.drawlist = [self.lander] + self.legs + [self.obstacle]
 
         return self.step(np.array([0, 0]) if self.continuous else 0)[0]
 
