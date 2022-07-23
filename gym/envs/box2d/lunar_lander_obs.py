@@ -180,9 +180,14 @@ class LunarLanderObs(gym.Env, EzPickle):
         vertices_poly = [(5, 5), (5, 2), (2, 2), (2, 5)] #may need to change later
         self.obstacle = self.world.CreateStaticBody(
 
-            shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
-                                    self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
-                               vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
+            # shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+            #                         self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+            #                    vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
+            shapes=circleShape(pos=(self.obstacle_params[0] + VIEWPORT_W / 2 / SCALE,
+                                    self.obstacle_params[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+                               radius=2),
+                                categoryBits=0x1000,
+
         )
 
         self.obstacle.color1 = (0.5, 0.4, 0.9)
