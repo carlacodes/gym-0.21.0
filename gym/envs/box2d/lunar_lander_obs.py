@@ -460,8 +460,8 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         for p in self.sky_polys:
             self.viewer.draw_polygon(p, color=(0, 0, 0))
-
-        for obj in self.particles + self.drawlist:
+        #editing below line to draw obstacle
+        for obj in self.particles + self.drawlist + self.obstacle:
             for f in obj.fixtures:
                 trans = f.body.transform
                 if type(f.shape) is circleShape:
