@@ -265,7 +265,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             leg.joint = self.world.CreateJoint(rjd)
             self.legs.append(leg)
 
-        self.drawlist = [self.lander] + self.legs
+        self.drawlist = [self.lander] + self.legs + self.obstacle
 
         return self.step(np.array([0, 0]) if self.continuous else 0)[0]
 
@@ -466,7 +466,7 @@ class LunarLanderObs(gym.Env, EzPickle):
         for p in self.sky_polys:
             self.viewer.draw_polygon(p, color=(0, 0, 0))
         #editing below line to draw obstacle
-        for obj in self.particles + self.drawlist + self.obstacle:
+        for obj in self.particles + self.drawlist:
             for f in obj.fixtures:
                 trans = f.body.transform
                 if type(f.shape) is circleShape:
