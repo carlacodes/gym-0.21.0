@@ -178,16 +178,29 @@ class LunarLanderObs(gym.Env, EzPickle):
         )
         #defining the polygon obstacle here:
         vertices_poly = [(5, 5), (5, 2), (2, 2), (2, 5)] #may need to change later
+        # self.obstacle = self.world.CreateStaticBody(
+        #
+        #     # shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+        #     #                         self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+        #     #                    vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
+        #     shapes=circleShape(pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+        #                             self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+        #                        radius=2),
+        #                         categoryBits=0x1000,
+        #
+        # )
         self.obstacle = self.world.CreateStaticBody(
-
-            # shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
-            #                         self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
-            #                    vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
-            shapes=circleShape(pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
-                                    self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
-                               radius=2),
-                                categoryBits=0x1000,
-
+            position=(self.obs_coords[0], self.obs_coords[1]),
+            angle=0.0,
+            fixtures=fixtureDef(
+                shapes=circleShape(pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+                self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+                density=5.0,
+                friction=0.1,
+                categoryBits=0x0010,
+                maskBits=0x001,  # collide only with ground
+                restitution=0.0,
+            ),  # 0.99 bouncy
         )
 
         self.obstacle.color1 = (0.5, 0.4, 0.9)
