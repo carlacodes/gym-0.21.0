@@ -183,8 +183,8 @@ class LunarLanderObs(gym.Env, EzPickle):
             # shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
             #                         self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
             #                    vertices= [(x / SCALE, y / SCALE) for x, y in vertices_poly]),
-            shapes=circleShape(pos=(self.obstacle_params[0] + VIEWPORT_W / 2 / SCALE,
-                                    self.obstacle_params[1] + (self.helipad_y + LEG_DOWN / SCALE)),
+            shapes=circleShape(pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+                                    self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE)),
                                radius=2),
                                 categoryBits=0x1000,
 
