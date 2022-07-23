@@ -95,8 +95,8 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         enable_wind: bool = False,
         wind_power: float = 15.0,
-        obs_coords = [1, 0],
-        enable_obstacle: bool = False
+        obs_coords = [1, 1],
+        enable_obstacle: bool = True
         ):
         EzPickle.__init__(self)
         self.seed()
@@ -198,7 +198,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 density=5.0,
                 friction=0.1,
                 categoryBits=0x0010,
-                maskBits=0x001,  # collide only with ground
+                #maskBits=0x001,  # collide only with ground
                 restitution=0.0,
             ),  # 0.99 bouncy
         )
