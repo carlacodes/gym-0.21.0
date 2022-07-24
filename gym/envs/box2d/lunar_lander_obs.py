@@ -196,11 +196,11 @@ class LunarLanderObs(gym.Env, EzPickle):
             fixtures=fixtureDef(
                 shape=circleShape(pos=(self.obs_coords[0],
                                        self.obs_coords[1])),
-                density=5.0,
-                friction=0.1,
-                categoryBits=0x0010,
-                # maskBits=0x001,  # collide only with ground
-                restitution=0.0,
+                # density=5.0,
+                # friction=0.1,
+                # categoryBits=0x0010,
+                # # maskBits=0x001,  # collide only with ground
+                # restitution=0.0,
             ),  # 0.99 bouncy
         )
 
@@ -509,6 +509,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             for f in obj2.fixtures:
                 trans = f.body.transform
                 if type(f.shape) is circleShape:
+                    print('printing circle')
                     t = rendering.Transform(translation=trans * f.shape.pos)
                     self.viewer.draw_circle(
                         f.shape.radius, 20, color=obj2.color1, filled=True
@@ -516,8 +517,8 @@ class LunarLanderObs(gym.Env, EzPickle):
                     self.viewer.draw_circle(
                         f.shape.radius, 20, color=obj2.color2, filled=False, linewidth=2
                     ).add_attr(t)
-                    t = rendering.Transform((10, 10))  # Position
-                    self.viewer.draw_circle(2).add_attr(t)  # Add transform for position
+                    # t = rendering.Transform((10, 10))  # Position
+                    # self.viewer.draw_circle(2).add_attr(t)  # Add transform for position
                     # self.viewer.render()
                 else:
                     path = [trans * v for v in f.shape.vertices]
