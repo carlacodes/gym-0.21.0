@@ -476,8 +476,8 @@ class LunarLanderObs(gym.Env, EzPickle):
             )
 
         self._clean_particles(False)
-        print('drawlist')
-        print(self.drawlist)
+        # print('drawlist')
+        # print(self.drawlist)
         for p in self.sky_polys:
             self.viewer.draw_polygon(p, color=(0, 0, 0))
         #editing below line to draw obstacle
@@ -505,6 +505,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         for obj2 in [self.obstacle]:
             print('rendering obstacle')
+            print(obj2)
             for f in obj2.fixtures:
                 trans = f.body.transform
                 if type(f.shape) is circleShape:
@@ -515,9 +516,9 @@ class LunarLanderObs(gym.Env, EzPickle):
                     self.viewer.draw_circle(
                         f.shape.radius, 20, color=obj2.color2, filled=False, linewidth=2
                     ).add_attr(t)
-                    # t = rendering.Transform((100, 100))  # Position
-                    # self.viewer.draw_circle(20).add_attr(t)  # Add transform for position
-                    # self.viewer.render()
+                    t = rendering.Transform((100, 100))  # Position
+                    self.viewer.draw_circle(2).add_attr(t)  # Add transform for position
+                    self.viewer.render()
                 else:
                     path = [trans * v for v in f.shape.vertices]
                     # print('poly shape in object fixtures')
