@@ -485,11 +485,14 @@ class LunarLanderObs(gym.Env, EzPickle):
                 if type(f.shape) is circleShape:
                     t = rendering.Transform(translation=trans * f.shape.pos)
                     self.viewer.draw_circle(
-                        f.shape.radius, 20, color=obj.color1
+                        f.shape.radius, 20, color=obj.color1, filled=True
                     ).add_attr(t)
                     self.viewer.draw_circle(
-                        f.shape.radius, 20, color=obj.color2, filled=False, linewidth=2
+                        f.shape.radius, 20, color=obj.color2, filled=True, linewidth=2
                     ).add_attr(t)
+                    t = rendering.Transform((100, 100))  # Position
+                    self.viewer.draw_circle(20).add_attr(t)  # Add transform for position
+                    self.viewer.render()
                 else:
                     path = [trans * v for v in f.shape.vertices]
                     print('poly shape in object fixtures')
