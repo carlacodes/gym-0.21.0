@@ -495,8 +495,8 @@ class LunarLanderObs(gym.Env, EzPickle):
                     # self.viewer.render()
                 else:
                     path = [trans * v for v in f.shape.vertices]
-                    print('poly shape in object fixtures')
-                    print(f)
+                    # print('poly shape in object fixtures')
+                    # print(f)
                     self.viewer.draw_polygon(path, color=obj.color1)
                     path.append(path[0])
                     self.viewer.draw_polyline(path, color=obj.color2, linewidth=2)
