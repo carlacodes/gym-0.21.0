@@ -25,7 +25,6 @@ python examples/agents/keyboard_agent.py LunarLander-v2
 Created by Oleg Klimov. Licensed on the same terms as the rest of OpenAI Gym.
 """
 
-
 import math
 import sys
 import numpy as np
@@ -72,8 +71,8 @@ class ContactDetector(contactListener):
 
     def BeginContact(self, contact):
         if (
-            self.env.lander == contact.fixtureA.body
-            or self.env.lander == contact.fixtureB.body
+                self.env.lander == contact.fixtureA.body
+                or self.env.lander == contact.fixtureB.body
         ):
             self.env.game_over = True
         for i in range(2):
@@ -93,11 +92,11 @@ class LunarLanderObs(gym.Env, EzPickle):
 
     def __init__(self,
 
-        enable_wind: bool = False,
-        wind_power: float = 15.0,
-        obs_coords = [10, 10],
-        enable_obstacle: bool = True
-        ):
+                 enable_wind: bool = False,
+                 wind_power: float = 15.0,
+                 obs_coords=[10, 10],
+                 enable_obstacle: bool = True
+                 ):
         EzPickle.__init__(self)
         self.seed()
         self.viewer = None
@@ -176,8 +175,8 @@ class LunarLanderObs(gym.Env, EzPickle):
         self.moon = self.world.CreateStaticBody(
             shapes=edgeShape(vertices=[(0, 0), (W, 0)])
         )
-        #defining the polygon obstacle here:
-        vertices_poly = [(5, 5), (5, 2), (2, 2), (2, 5)] #may need to change later
+        # defining the polygon obstacle here:
+        vertices_poly = [(5, 5), (5, 2), (2, 2), (2, 5)]  # may need to change later
         # self.obstacle = self.world.CreateStaticBody(
         #
         #     # shapes=polygonShape(centroid=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
@@ -191,22 +190,23 @@ class LunarLanderObs(gym.Env, EzPickle):
         # )
         self.obstacle = self.world.CreateStaticBody(
             position=(self.obs_coords[0], self.obs_coords[1]),
-
-            angle=0.0, #pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE))
+            # (self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
+            # self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE))
+            angle=0.0,
             fixtures=fixtureDef(
                 shape=circleShape(pos=(self.obs_coords[0],
-                self.obs_coords[1]),
+                                       self.obs_coords[1])),
                 density=5.0,
                 friction=0.1,
                 categoryBits=0x0010,
-                #maskBits=0x001,  # collide only with ground
+                # maskBits=0x001,  # collide only with ground
                 restitution=0.0,
             ),  # 0.99 bouncy
         )
 
         self.obstacle.color1 = (0.5, 0.4, 0.9)
         self.obstacle.color2 = (1, 1, 1)
-        #self.obstacle.alpha = 0.8
+        # self.obstacle.alpha = 0.8
         self.sky_polys = []
         for i in range(CHUNKS - 1):
             p1 = (chunk_x[i], smooth_y[i])
@@ -270,7 +270,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             )
             if i == -1:
                 rjd.lowerAngle = (
-                    +0.9 - 0.5
+                        +0.9 - 0.5
                 )  # The most esoteric numbers here, angled legs have freedom to travel within
                 rjd.upperAngle = +0.9
             else:
@@ -322,16 +322,16 @@ class LunarLanderObs(gym.Env, EzPickle):
         m_power = 0.0
 
         if self.enable_wind and not (
-            self.legs[0].ground_contact or self.legs[1].ground_contact
+                self.legs[0].ground_contact or self.legs[1].ground_contact
         ):
             # the function used for wind is tanh(sin(2 k x) + sin(pi k x)),
             # which is proven to never be periodic, k = 0.01
             wind_mag = (
-                math.tanh(
-                    math.sin(0.02 * self.wind_idx)
-                    + (math.sin(math.pi * 0.01 * self.wind_idx))
-                )
-                * self.wind_power
+                    math.tanh(
+                        math.sin(0.02 * self.wind_idx)
+                        + (math.sin(math.pi * 0.01 * self.wind_idx))
+                    )
+                    * self.wind_power
             )
             self.wind_idx += 1
             # print('calculated wind power:')
@@ -342,7 +342,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             )
 
         if (self.continuous and action[0] > 0.0) or (
-            not self.continuous and action == 2
+                not self.continuous and action == 2
         ):
             # Main engine
             if self.continuous:
@@ -351,7 +351,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             else:
                 m_power = 1.0
             ox = (
-                tip[0] * (4 / SCALE + 2 * dispersion[0]) + side[0] * dispersion[1]
+                    tip[0] * (4 / SCALE + 2 * dispersion[0]) + side[0] * dispersion[1]
             )  # 4 is move a bit downwards, +-2 for randomness
             oy = -tip[1] * (4 / SCALE + 2 * dispersion[0]) - side[1] * dispersion[1]
             impulse_pos = (self.lander.position[0] + ox, self.lander.position[1] + oy)
@@ -374,7 +374,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         s_power = 0.0
         if (self.continuous and np.abs(action[1]) > 0.5) or (
-            not self.continuous and action in [1, 3]
+                not self.continuous and action in [1, 3]
         ):
             # Orientation engines
             if self.continuous:
@@ -385,10 +385,10 @@ class LunarLanderObs(gym.Env, EzPickle):
                 direction = action - 2
                 s_power = 1.0
             ox = tip[0] * dispersion[0] + side[0] * (
-                3 * dispersion[1] + direction * SIDE_ENGINE_AWAY / SCALE
+                    3 * dispersion[1] + direction * SIDE_ENGINE_AWAY / SCALE
             )
             oy = -tip[1] * dispersion[0] - side[1] * (
-                3 * dispersion[1] + direction * SIDE_ENGINE_AWAY / SCALE
+                    3 * dispersion[1] + direction * SIDE_ENGINE_AWAY / SCALE
             )
             impulse_pos = (
                 self.lander.position[0] + ox - tip[0] * 17 / SCALE,
@@ -426,15 +426,15 @@ class LunarLanderObs(gym.Env, EzPickle):
                                        (pos.y - (self.obs_coords[1] +
                                                  (self.helipad_y + LEG_DOWN / SCALE))) ** 2)
         reward = 0
-        if (distance_to_obstacle <= (1/SCALE)):
+        if (distance_to_obstacle <= (1 / SCALE)):
             print('dangerously close to obstacle!')
         shaping = (
-            -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
-            - 100 * np.sqrt(state[2] * state[2] + state[3] * state[3])
-            - 100 * abs(state[4])
-            + 10 * state[6]
-            + 10 * state[7]
-            - 50 * (distance_to_obstacle <= (1/SCALE))
+                -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
+                - 100 * np.sqrt(state[2] * state[2] + state[3] * state[3])
+                - 100 * abs(state[4])
+                + 10 * state[6]
+                + 10 * state[7]
+                - 50 * (distance_to_obstacle <= (1 / SCALE))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
@@ -442,7 +442,7 @@ class LunarLanderObs(gym.Env, EzPickle):
         self.prev_shaping = shaping
 
         reward -= (
-            m_power * 0.30
+                m_power * 0.30
         )  # less fuel spent is better, about -30 for heuristic landing
         reward -= s_power * 0.03
 
@@ -480,7 +480,7 @@ class LunarLanderObs(gym.Env, EzPickle):
         # print(self.drawlist)
         for p in self.sky_polys:
             self.viewer.draw_polygon(p, color=(0, 0, 0))
-        #editing below line to draw obstacle
+        # editing below line to draw obstacle
         for obj in self.particles + self.drawlist:
             for f in obj.fixtures:
                 trans = f.body.transform
@@ -518,7 +518,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                     ).add_attr(t)
                     t = rendering.Transform((10, 10))  # Position
                     self.viewer.draw_circle(2).add_attr(t)  # Add transform for position
-                    #self.viewer.render()
+                    # self.viewer.render()
                 else:
                     path = [trans * v for v in f.shape.vertices]
                     # print('poly shape in object fixtures')
@@ -588,7 +588,7 @@ def heuristic(env, s):
     if s[6] or s[7]:  # legs have contact
         angle_todo = 0
         hover_todo = (
-            -(s[3]) * 0.5
+                -(s[3]) * 0.5
         )  # override to reduce fall speed, that's all we need after contact
 
     if env.continuous:
