@@ -191,6 +191,7 @@ class LunarLanderObs(gym.Env, EzPickle):
         # )
         self.obstacle = self.world.CreateStaticBody(
             position=(self.obs_coords[0], self.obs_coords[1]),
+
             angle=0.0,
             fixtures=fixtureDef(
                 shape=circleShape(pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
@@ -278,7 +279,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             leg.joint = self.world.CreateJoint(rjd)
             self.legs.append(leg)
 
-        self.drawlist = [self.lander] + self.legs + [self.obstacle]
+        self.drawlist = [self.lander] + self.legs
 
         return self.step(np.array([0, 0]) if self.continuous else 0)[0]
 
@@ -501,6 +502,29 @@ class LunarLanderObs(gym.Env, EzPickle):
                     self.viewer.draw_polygon(path, color=obj.color1)
                     path.append(path[0])
                     self.viewer.draw_polyline(path, color=obj.color2, linewidth=2)
+
+        for obj2 in [self.obstacle]:
+            print('rendering obstacle')
+            for f in obj2.fixtures:
+                trans = f.body.transform
+                if type(f.shape) is circleShape:
+                    t = rendering.Transform(translation=trans * f.shape.pos)
+                    self.viewer.draw_circle(
+                        f.shape.radius, 20, color=obj2.color1, filled=True
+                    ).add_attr(t)
+                    self.viewer.draw_circle(
+                        f.shape.radius, 20, color=obj2.color2, filled=False, linewidth=2
+                    ).add_attr(t)
+                    # t = rendering.Transform((100, 100))  # Position
+                    # self.viewer.draw_circle(20).add_attr(t)  # Add transform for position
+                    # self.viewer.render()
+                else:
+                    path = [trans * v for v in f.shape.vertices]
+                    # print('poly shape in object fixtures')
+                    # print(f)
+                    self.viewer.draw_polygon(path, color=obj2.color1)
+                    path.append(path[0])
+                    self.viewer.draw_polyline(path, color=obj2.color2, linewidth=2)
 
         for x in [self.helipad_x1, self.helipad_x2]:
             flagy1 = self.helipad_y
