@@ -475,6 +475,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             )
 
         self._clean_particles(False)
+        print('drawlist')
         print(self.drawlist)
         for p in self.sky_polys:
             self.viewer.draw_polygon(p, color=(0, 0, 0))
