@@ -485,7 +485,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 if type(f.shape) is circleShape:
                     t = rendering.Transform(translation=trans * f.shape.pos)
                     self.viewer.draw_circle(
-                        f.shape.radius, 20, color=obj.color1, filled=True
+                        f.shape.radius, 20, color=obj.color1
                     ).add_attr(t)
                     self.viewer.draw_circle(
                         f.shape.radius, 20, color=obj.color2, filled=True, linewidth=2
