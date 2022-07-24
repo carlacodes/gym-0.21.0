@@ -511,7 +511,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 if type(f.shape) is circleShape:
                     print('printing circle of radius')
                     #t = rendering.Transform(translation=trans * f.shape.pos)
-                    t = rendering.Transform(self.obs_coords[0], self.ob_coords[1])
+                    t = rendering.Transform(self.obs_coords[0], self.obs_coords[1])
                     print(f.shape.radius)
                     self.viewer.draw_circle(
                         f.shape.radius, 20, color=obj2.color1, filled=True
