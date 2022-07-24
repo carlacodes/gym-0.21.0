@@ -95,7 +95,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         enable_wind: bool = False,
         wind_power: float = 15.0,
-        obs_coords = [1, 1],
+        obs_coords = [10, 10],
         enable_obstacle: bool = True
         ):
         EzPickle.__init__(self)
