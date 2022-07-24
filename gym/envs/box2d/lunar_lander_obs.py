@@ -192,10 +192,10 @@ class LunarLanderObs(gym.Env, EzPickle):
         self.obstacle = self.world.CreateStaticBody(
             position=(self.obs_coords[0], self.obs_coords[1]),
 
-            angle=0.0,
+            angle=0.0, #pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE))
             fixtures=fixtureDef(
-                shape=circleShape(pos=(self.obs_coords[0] + VIEWPORT_W / 2 / SCALE,
-                self.obs_coords[1] + (self.helipad_y + LEG_DOWN / SCALE))),
+                shape=circleShape(pos=(self.obs_coords[0],
+                self.obs_coords[1]),
                 density=5.0,
                 friction=0.1,
                 categoryBits=0x0010,
