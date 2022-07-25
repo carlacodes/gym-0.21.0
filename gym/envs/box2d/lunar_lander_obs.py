@@ -409,6 +409,11 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         self.world.Step(1.0 / FPS, 6 * 30, 2 * 30)
 
+        def get_dist(point_a, point_b):
+            x1, y1 = point_a
+            x2, y2 = point_b
+            return math.hypot(x1 - x2, y1 - y2)
+
         pos = self.lander.position
         vel = self.lander.linearVelocity
         state = [
@@ -421,10 +426,11 @@ class LunarLanderObs(gym.Env, EzPickle):
             1.0 if self.legs[0].ground_contact else 0.0,
             1.0 if self.legs[1].ground_contact else 0.0,
 
-            math.dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
+            get_dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
         ]
         assert len(state) == 8
         reward = 0
+
         if (state[8] <= (1)):
             print('dangerously close to obstacle!')
         shaping = (
@@ -633,5 +639,4 @@ def demo_heuristic_lander(env, seed=None, render=False):
     return total_reward
 
 
-if __name__ == "__main__":
-    demo_heuristic_lander(LunarLander(), render=True)
+if __name__ == "__main__": demo_heuristic_lander(LunarLander(), render=True)
