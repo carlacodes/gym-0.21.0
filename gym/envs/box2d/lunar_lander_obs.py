@@ -420,14 +420,12 @@ class LunarLanderObs(gym.Env, EzPickle):
             20.0 * self.lander.angularVelocity / FPS,
             1.0 if self.legs[0].ground_contact else 0.0,
             1.0 if self.legs[1].ground_contact else 0.0,
+
+            math.dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
         ]
         assert len(state) == 8
-        distance_to_obstacle = np.sqrt((pos.x - (self.obs_coords[0] +
-                                                 VIEWPORT_W / SCALE / 2)) ** 2 +
-                                       (pos.y - (self.obs_coords[1] +
-                                                 (self.helipad_y + LEG_DOWN / SCALE))) ** 2)
         reward = 0
-        if (distance_to_obstacle <= (1)):
+        if (state[8] <= (1)):
             print('dangerously close to obstacle!')
         shaping = (
                 -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
@@ -435,7 +433,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 - 100 * abs(state[4])
                 + 10 * state[6]
                 + 10 * state[7]
-                - 50 * (distance_to_obstacle <= (1))
+                - 50 * (state[8] <= (1))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
