@@ -75,14 +75,14 @@ register(
 register(
     id="LunarLander-v4",
     entry_point="gym.envs.box2d:LunarLanderObs",
-    max_episode_steps=1000,
+    max_episode_steps=10000,
     reward_threshold=200,
 )
 
 register(
     id="LunarLanderContinuous-v4",
     entry_point="gym.envs.box2d:LunarLanderContinuousObs",
-    max_episode_steps=1000,
+    max_episode_steps=10000,
     reward_threshold=200,
 )
 
