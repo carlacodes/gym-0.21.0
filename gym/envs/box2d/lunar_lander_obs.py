@@ -117,7 +117,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(
-            -np.inf, np.inf, shape=(8,), dtype=np.float32
+            -np.inf, np.inf, shape=(9,), dtype=np.float32 #change to fit number of state variables
         )
 
         if self.continuous:
