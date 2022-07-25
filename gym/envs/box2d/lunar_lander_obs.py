@@ -409,10 +409,10 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         self.world.Step(1.0 / FPS, 6 * 30, 2 * 30)
 
-        def get_dist(point_a, point_b):
-            x1, y1 = point_a
-            x2, y2 = point_b
-            return math.hypot(x1 - x2, y1 - y2)
+        # def get_dist(point_a, point_b):
+        #     x1, y1 = point_a
+        #     x2, y2 = point_b
+        #     return math.hypot(x1 - x2, y1 - y2)
 
         pos = self.lander.position
         vel = self.lander.linearVelocity
@@ -426,7 +426,8 @@ class LunarLanderObs(gym.Env, EzPickle):
             1.0 if self.legs[0].ground_contact else 0.0,
             1.0 if self.legs[1].ground_contact else 0.0,
 
-            get_dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
+            #get_dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
+            math.sqrt((pos.x- self.obs_coords[0]) ** 2 + (pos.y - -self.obs_coords[1]) ** 2)
         ]
         assert len(state) == 8
         reward = 0
