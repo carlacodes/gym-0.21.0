@@ -435,7 +435,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 - 100 * abs(state[4])
                 + 10 * state[6]
                 + 10 * state[7]
-                - 50 * (distance_to_obstacle <= (1 / SCALE))
+                - 50 * (distance_to_obstacle <= (1))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
