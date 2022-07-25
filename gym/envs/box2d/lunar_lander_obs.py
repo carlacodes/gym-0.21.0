@@ -440,7 +440,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 - 100 * abs(state[4])
                 + 10 * state[6]
                 + 10 * state[7]
-                - 50 * (state[8] <= (1))
+                - 50 * (state[8] <= (2))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
@@ -593,7 +593,7 @@ def heuristic(env, s):
 
     dist_to_ob=s[8]
     if dist_to_ob<=1:
-        dist_to_ob=2
+        s[8]=2
 
     angle_todo = (angle_targ - s[4]) * 0.5 - (s[5]) * 1.0
     hover_todo = (hover_targ - s[1]) * 0.5 - (s[3]) * 0.5
