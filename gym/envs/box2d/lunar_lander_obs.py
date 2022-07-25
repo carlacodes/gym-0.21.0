@@ -429,7 +429,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             #get_dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
             math.sqrt((pos.x- self.obs_coords[0]) ** 2 + (pos.y - -self.obs_coords[1]) ** 2)
         ]
-        assert len(state) == 8
+        assert len(state) == 9
         reward = 0
 
         if (state[8] <= (1)):
