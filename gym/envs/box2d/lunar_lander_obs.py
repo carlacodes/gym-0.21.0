@@ -591,6 +591,10 @@ def heuristic(env, s):
         s[0]
     )  # target y should be proportional to horizontal offset
 
+    dist_to_ob=s[8]
+    if dist_to_ob<=1:
+        dist_to_ob=2
+
     angle_todo = (angle_targ - s[4]) * 0.5 - (s[5]) * 1.0
     hover_todo = (hover_targ - s[1]) * 0.5 - (s[3]) * 0.5
 
