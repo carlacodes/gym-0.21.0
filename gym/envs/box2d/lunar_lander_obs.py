@@ -427,7 +427,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                                        (pos.y - (self.obs_coords[1] +
                                                  (self.helipad_y + LEG_DOWN / SCALE))) ** 2)
         reward = 0
-        if (distance_to_obstacle <= (1)):
+        if (distance_to_obstacle <= (5)):
             print('dangerously close to obstacle!')
         shaping = (
                 -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
