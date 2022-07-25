@@ -195,7 +195,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             angle=0.0,
             fixtures=fixtureDef(
                 #circleShape(radius=2 / SCALE, pos=(0, 0)),
-                shape=circleShape(radius=2 / SCALE, pos=(self.obs_coords[0],
+                shape=circleShape(radius=20/ SCALE, pos=(self.obs_coords[0],
                                        self.obs_coords[1])),
                 # density=5.0,
                 # friction=0.1,
@@ -427,7 +427,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                                        (pos.y - (self.obs_coords[1] +
                                                  (self.helipad_y + LEG_DOWN / SCALE))) ** 2)
         reward = 0
-        if (distance_to_obstacle <= (1 / SCALE)):
+        if (distance_to_obstacle <= (1)):
             print('dangerously close to obstacle!')
         shaping = (
                 -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
