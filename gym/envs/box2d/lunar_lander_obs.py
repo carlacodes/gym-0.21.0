@@ -289,7 +289,7 @@ class LunarLanderObs(gym.Env, EzPickle):
             position=(x, y),
             angle=0.0,
             fixtures=fixtureDef(
-                shape=circleShape(radius=2 / SCALE, pos=(0, 0)),
+                shape=circleShape(radius=20 / SCALE, pos=(0, 0)),
                 density=mass,
                 friction=0.1,
                 categoryBits=0x0100,
