@@ -117,7 +117,7 @@ class LunarLanderObs(gym.Env, EzPickle):
 
         # useful range is -1 .. +1, but spikes can be higher
         self.observation_space = spaces.Box(
-            -np.inf, np.inf, shape=(9,), dtype=np.float32 #change to fit number of state variables
+            -np.inf, np.inf, shape=(8,), dtype=np.float32 #change to fit number of state variables
         )
 
         if self.continuous:
@@ -424,15 +424,15 @@ class LunarLanderObs(gym.Env, EzPickle):
             self.lander.angle,
             20.0 * self.lander.angularVelocity / FPS,
             1.0 if self.legs[0].ground_contact else 0.0,
-            1.0 if self.legs[1].ground_contact else 0.0,
+            1.0 if self.legs[1].ground_contact else 0.0
 
             #get_dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
-            math.sqrt((pos.x- self.obs_coords[0]) ** 2 + (pos.y - -self.obs_coords[1]) ** 2)
         ]
-        assert len(state) == 9
+        assert len(state) == 8
         reward = 0
+        dist_to_obstacle  = math.sqrt((pos.x- self.obs_coords[0]) ** 2 + (pos.y - -self.obs_coords[1]) ** 2)
 
-        if (state[8] <= (1)):
+        if (dist_to_obstacle <= (2)):
             print('dangerously close to obstacle!')
         shaping = (
                 -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
@@ -440,7 +440,7 @@ class LunarLanderObs(gym.Env, EzPickle):
                 - 100 * abs(state[4])
                 + 10 * state[6]
                 + 10 * state[7]
-                - 100 * (state[8] <= (2))
+                - 100 * (dist_to_obstacle <= (2))
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
