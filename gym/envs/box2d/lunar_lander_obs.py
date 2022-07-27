@@ -429,36 +429,39 @@ class LunarLanderObs(gym.Env, EzPickle):
             #get_dist([pos.x, pos.y], [self.obs_coords[0], self.obs_coords[1]]), #distance relative to obstacle
         ]
         assert len(state) == 8
+        distance_to_obstacle  = math.sqrt((pos.x- self.obs_coords[0]) ** 2 + (pos.y - -self.obs_coords[1]) ** 2)
         reward = 0
-        dist_to_obstacle  = math.sqrt((pos.x- self.obs_coords[0]) ** 2 + (pos.y - -self.obs_coords[1]) ** 2)
-
-        if (dist_to_obstacle <= (2)):
-            print('dangerously close to obstacle!')
         shaping = (
-                -100 * np.sqrt(state[0] * state[0] + state[1] * state[1])
-                - 100 * np.sqrt(state[2] * state[2] + state[3] * state[3])
+            # If the lander moves away from the landing pad, it loses reward
+                - 150 * np.sqrt(state[0] * state[0] + state[1] * state[1])  # Euclidean distance
+                - -50 * np.sqrt(state[2] * state[2] + state[3] * state[3])
+
                 - 100 * abs(state[4])
+                # Each leg with ground contact is +10 points.
                 + 10 * state[6]
                 + 10 * state[7]
-                - 100 * (dist_to_obstacle <= (2))
+                - 50 * (distance_to_obstacle <= (20 / SCALE))  # obstacles
         )  # And ten points for legs contact, the idea is if you
         # lose contact again after landing, you get negative reward
         if self.prev_shaping is not None:
             reward = shaping - self.prev_shaping
         self.prev_shaping = shaping
 
+        # Firing the main engine is -0.3 points each frame.
         reward -= (
                 m_power * 0.30
         )  # less fuel spent is better, about -30 for heuristic landing
+        # Firing the side engine is -0.03 points each frame.
         reward -= s_power * 0.03
 
         done = False
-        if self.game_over or abs(state[0]) >= 1.0:
+        if self.game_over or abs(state[0]) >= 1.0:  # crashed?
             done = True
             reward = -100
-        if not self.lander.awake:
+        if not self.lander.awake and (np.sqrt(state[0] * state[0] + state[1] * state[1]) == 0) and (
+                np.sqrt(state[2] * state[2] + state[3] * state[3]) == 0):  # rest
             done = True
-            reward = +100
+            reward = +200
         return np.array(state, dtype=np.float32), reward, done, {}
 
     def render(self, mode="human"):
